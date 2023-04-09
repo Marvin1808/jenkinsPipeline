@@ -2,20 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') { 
-            steps { 
-                sh 'make' 
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
             }
         }
-        stage('Test'){
+
+        stage('Test') {
             steps {
-                sh 'make check'
-                junit 'reports/**/*.xml' 
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'make publish'
+                sh 'mvn test'
             }
         }
     }
