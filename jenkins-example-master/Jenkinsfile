@@ -1,10 +1,12 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/main']],
+                          userRemoteConfigs: [[url: 'https://github.com/Marvin1808/jenkinsPipeline.git']]])
             }
         }
         
@@ -13,9 +15,10 @@ pipeline {
                 sh 'javac src/main/java/com/techprimers/testing/FizzBuzz.java -d target'
             }
         }
+        
         stage('Test') {
             steps {
-                sh 'java -cp target com.techprimers.testing.FizzBuzzTest'
+                sh 'java -cp target com.techprimers.testing.FizzBuzz'
             }
         }
     }
