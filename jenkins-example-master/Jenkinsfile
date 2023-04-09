@@ -10,14 +10,15 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'javac src/main/java/com/techprimers/*.java -d target'
+                sh 'javac src/main/java/com/techprimers/testing*.java -d target'
             }
         }
         
         stage('Test') {
             steps {
-                sh 'java -cp "target:test" org.junit.runner.JUnitCore com.techprimers.FizzBuzzTest'
+                sh 'java -cp "target:test" org.junit.runner.JUnitCore com.techprimers.testing.FizzBuzzTest'
             }
         }
     }
 }
+
