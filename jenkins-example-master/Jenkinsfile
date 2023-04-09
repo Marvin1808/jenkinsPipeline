@@ -10,7 +10,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'javac src/main/java/com/techprimers/testing/*.java -d target'
+                sh 'javac src/main/java/com/techprimers/testing/FizzBuzz.java -d target'
             }
         }
         
