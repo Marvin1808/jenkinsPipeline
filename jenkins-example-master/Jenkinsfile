@@ -1,44 +1,36 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'echo "Building..."'
+                git 'https://github.com/username/repository.git'
             }
         }
+
+        stage('Compile') {
+            steps {
+                sh 'javac src/*.java'
+            }
+        }
+
         stage('Test') {
             steps {
-                sh 'echo "Testing..."'
+                sh 'java -cp src org.junit.runner.JUnitCore com.techprimers.testing.FizzBuzzTest'
             }
         }
+
+        stage('Build JAR') {
+            steps {
+                sh 'mkdir -p build'
+                sh 'jar cvf build/myapp.jar src/*.class'
+            }
+        }
+
         stage('Deploy') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'my-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh 'echo "Deploying... (Username: $USERNAME, Password: $PASSWORD)"'
-                }
+                sh 'scp build/myapp.jar user@server:/path/to/destination'
             }
-        }
-        stage('Cleanup') {
-            when {
-                allOf {
-                    branch 'main'
-                    environment name: 'DEPLOY_TO', value: 'production'
-                }
-            }
-            steps {
-                sh 'echo "Cleaning up... (Branch: ${env.BRANCH_NAME}, Deploy to: ${env.DEPLOY_TO})"'
-            }
-        }
-    }
-    post {
-        always {
-            sh 'echo "Pipeline finished"'
-        }
-        success {
-            slackSend message: "Pipeline succeeded"
-        }
-        failure {
-            slackSend message: "Pipeline failed"
         }
     }
 }
