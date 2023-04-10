@@ -1,10 +1,8 @@
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+package com.techprimers.testing;
 
-public class FizzBuzzTest {
+import org.junit.jupiter.api.*;
+
+class FizzBuzzTest {
 
     public FizzBuzz fB;
 
