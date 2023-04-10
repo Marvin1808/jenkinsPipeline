@@ -1,32 +1,27 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'Maven 3.8.1'
+    }
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM',
-                          branches: [[name: '*/main']],
-                          userRemoteConfigs: [[url: 'https://github.com/Marvin1808/jenkinsPipeline.git']]])
+                checkout scm
             }
         }
-        
         stage('Build') {
-            environment {
-                MAVEN_HOME = tool 'Maven'
-                PATH = "$MAVEN_HOME/bin:${env.PATH}"
-            }
             steps {
                 sh 'mvn clean package'
             }
         }
-        
         stage('Test') {
-            environment {
-                MAVEN_HOME = tool 'Maven'
-                PATH = "$MAVEN_HOME/bin:${env.PATH}"
-            }
             steps {
                 sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/**/*.xml'
+                }
             }
         }
     }
