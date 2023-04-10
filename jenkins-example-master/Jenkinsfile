@@ -1,19 +1,32 @@
 pipeline {
   agent any
+  environment {
+    PYTHON_VERSION = '3.9.5'
+    VENV_DIR = '/opt/venv'
+  }
   stages {
+    stage('Install Dependencies') {
+      steps {
+        sh 'apt-get update'
+        sh 'apt-get -y install python3 python3-pip python3-venv'
+        sh "python${PYTHON_VERSION} -m venv ${VENV_DIR}"
+        sh "${VENV_DIR}/bin/pip install -r requirements.txt"
+      }
+    }
     stage('Build') {
       steps {
-        sh 'echo "Building..."'
+        sh 'python setup.py build'
       }
     }
     stage('Test') {
       steps {
-        sh 'echo "Testing..."'
+        sh 'python setup.py test'
       }
     }
     stage('Deploy') {
       steps {
-        sh 'echo "Deploying..."'
+        sh 'python setup.py install'
+        sh 'myapp --config=config.yaml'
       }
     }
   }
