@@ -34,4 +34,17 @@ public class FizzBuzzTest {
         Assertions.assertEquals(fizzBuzz, "Buzz");
     }
 
-    @DisplayName("Don't
+    @DisplayName("Don't Play FizzBuzz with number = 0")
+    @Test
+    public void testZero() {
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> fB.play(0));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        fB = null;
+    }
+
+}
