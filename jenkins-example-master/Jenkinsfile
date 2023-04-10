@@ -9,8 +9,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'javac -cp junit-platform-console-standalone-1.7.0.jar:. com/techprimers/testing/FizzBuzzTest.java'
-                sh 'java -jar junit-platform-console-standalone-1.7.0.jar -cp . --select-class com/techprimers/testing/FizzBuzzTest.java'
+                sh 'javac -cp junit-platform-console-standalone-1.7.0.jar:. jenkins-example-master\src\test\java\com\techprimers\testing\FizzBuzzTest.java'
+                sh 'java -jar junit-platform-console-standalone-1.7.0.jar -cp . --select-class jenkins-example-master\src\test\java\com\techprimers\testing\FizzBuzzTest.java'
             }
         }
     }
