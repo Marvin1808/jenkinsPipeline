@@ -7,6 +7,7 @@ pipeline {
                 sh 'rm -rf jenkinsPipeline'
                 sh 'curl -L https://github.com/Marvin1808/jenkinsPipeline/archive/refs/heads/main.zip -o jenkinsPipeline.zip'
                 sh 'unzip jenkinsPipeline.zip'
+                sh 'mv jenkinsPipeline-main/* .'
             }
         }
 
