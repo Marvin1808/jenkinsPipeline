@@ -9,12 +9,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'javac jenkins-example-master\\src\test\\java\\com\\techprimers\\testing\\FizzBuzzTest.java -d target'
+                sh 'javac jenkins-example-master/src/test/java/com/techprimers/testing/FizzBuzzTest.java -d target'
             }
         }
         stage('Test') {
             steps {
-                sh 'java -cp target jenkins-example-master\\src\test\\java\\com\\techprimers\\testing\\FizzBuzzTest.java'
+                sh 'java -cp target com.techprimers.testing.FizzBuzzTest'
             }
         }
     }
