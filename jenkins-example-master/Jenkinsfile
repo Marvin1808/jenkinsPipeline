@@ -1,35 +1,31 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven 3.9.1'
+        maven 'Maven'
     }
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
-                // Checkout SCM code
                 checkout scm
             }
         }
         stage('Build') {
             steps {
-                // Run Maven build
-                withMaven(maven: 'Maven 3.9.1') {
+                withMaven(maven: 'Maven') {
                     sh 'mvn clean package'
                 }
             }
         }
         stage('Test') {
             steps {
-                // Run tests
-                withMaven(maven: 'Maven 3.9.1') {
+                withMaven(maven: 'Maven') {
                     sh 'mvn test'
                 }
             }
         }
         stage('Deploy') {
             steps {
-                // Deploy artifacts
-                withMaven(maven: 'Maven 3.9.1') {
+                withMaven(maven: 'Maven') {
                     sh 'mvn deploy'
                 }
             }
