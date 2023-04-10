@@ -4,12 +4,27 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Marvin1808/jenkinsPipeline.git'
+                sh 'rm -rf jenkinsPipeline'
+                sh 'curl -L https://github.com/Marvin1808/jenkinsPipeline/archive/refs/heads/main.zip -o jenkinsPipeline.zip'
+                sh 'unzip jenkinsPipeline.zip'
             }
         }
-        stage('Execute shell command') {
+
+        stage('Build') {
             steps {
-                sh 'echo "Hello World!"'
+                sh 'echo "Building the application..."'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'echo "Running tests..."'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'echo "Deploying the application..."'
             }
         }
     }
