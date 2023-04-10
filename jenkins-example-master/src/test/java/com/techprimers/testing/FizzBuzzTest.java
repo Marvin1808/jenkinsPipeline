@@ -1,8 +1,10 @@
-package com.techprimers.testing;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.*;
-
-class FizzBuzzTest {
+public class FizzBuzzTest {
 
     public FizzBuzz fB;
 
@@ -32,17 +34,4 @@ class FizzBuzzTest {
         Assertions.assertEquals(fizzBuzz, "Buzz");
     }
 
-    @DisplayName("Don't Play FizzBuzz with number = 0")
-    @Test
-    public void testZero() {
-
-        Assertions.assertThrows(IllegalArgumentException.class,
-                () -> fB.play(0));
-    }
-
-    @AfterEach
-    public void tearDown() {
-        fB = null;
-    }
-
-}
+    @DisplayName("Don't
