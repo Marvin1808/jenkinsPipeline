@@ -1,54 +1,44 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_REGISTRY = "my-docker-registry.com"
-        APP_NAME = "my-app"
-        APP_VERSION = "1.0.0"
-        K8S_NAMESPACE = "my-namespace"
-        K8S_DEPLOYMENT_NAME = "my-app-deployment"
-        K8S_CONTAINER_NAME = "my-app-container"
-    }
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                checkout scm
+                sh 'echo "Building..."'
             }
         }
-        stage('Build and Test') {
+        stage('Test') {
             steps {
-                sh 'npm install'
-                sh 'npm run test'
+                sh 'echo "Testing..."'
             }
         }
-        stage('Build and Push Docker Image') {
+        stage('Deploy') {
             steps {
-                script {
-                    docker.withRegistry("${DOCKER_REGISTRY}", "docker-registry-credentials") {
-                        def dockerImage = docker.build("${DOCKER_REGISTRY}/${APP_NAME}:${APP_VERSION}", ".")
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    kubernetesDeploy(
-                        kubeconfigId: "my-kubeconfig",
-                        configs: 'kubernetes/*.yaml',
-                        enableConfigSubstitution: true,
-                        namespace: "${K8S_NAMESPACE}",
-                        deployment: "${K8S_DEPLOYMENT_NAME}",
-                        container: "${K8S_CONTAINER_NAME}",
-                        imagePullSecrets: ['my-registry-secret']
-                    )
+                withCredentials([usernamePassword(credentialsId: 'my-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'echo "Deploying... (Username: $USERNAME, Password: $PASSWORD)"'
                 }
             }
         }
         stage('Cleanup') {
-            steps {
-                sh 'npm run cleanup'
+            when {
+                allOf {
+                    branch 'main'
+                    environment name: 'DEPLOY_TO', value: 'production'
+                }
             }
+            steps {
+                sh 'echo "Cleaning up... (Branch: ${env.BRANCH_NAME}, Deploy to: ${env.DEPLOY_TO})"'
+            }
+        }
+    }
+    post {
+        always {
+            sh 'echo "Pipeline finished"'
+        }
+        success {
+            slackSend message: "Pipeline succeeded"
+        }
+        failure {
+            slackSend message: "Pipeline failed"
         }
     }
 }
