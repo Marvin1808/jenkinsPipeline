@@ -4,32 +4,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/username/repository.git'
+                git 'https://github.com/Marvin1808/jenkinsPipeline.git'
             }
         }
-
-        stage('Compile') {
+        stage('Execute shell command') {
             steps {
-                sh 'javac src/*.java'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'java -cp src org.junit.runner.JUnitCore com.techprimers.testing.FizzBuzzTest'
-            }
-        }
-
-        stage('Build JAR') {
-            steps {
-                sh 'mkdir -p build'
-                sh 'jar cvf build/myapp.jar src/*.class'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'scp build/myapp.jar user@server:/path/to/destination'
+                sh 'echo "Hello World!"'
             }
         }
     }
